@@ -12,6 +12,11 @@ import loglevel from 'loglevel';
 
 dotenv.config();
 
+if (process.env.SEED_DB) {
+  loadUsers();
+  loadMovies();
+}
+
 const app = express();
 
 const port = process.env.PORT;
@@ -25,21 +30,6 @@ const errHandler = (err, req, res, next) => {
   res.status(500).send(`Hey!! You caught the error 👍👍, ${err.stack} `);
 };
 
-if (process.env.NODE_ENV === 'test') {
-  loglevel.setLevel('warn')
-} else {
-  loglevel.setLevel('info')
-}
-
-
-if (process.env.SEED_DB) {
-  loadUsers();
-  loadMovies();
-}
-
-//configure body-parser
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
 //session middleware
 app.use(session({
   secret: 'ilikecake',
@@ -47,14 +37,15 @@ app.use(session({
   saveUninitialized: true
 }));
 app.use(express.static('public'));
-// initialise passport​
+//configure body-parser
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
 app.use(passport.initialize());
-// Add passport.authenticate(..)  to middleware stack for protected routes​
 app.use('/api/movies', passport.authenticate('jwt', {session: false}), moviesRouter);
-app.use('/api/users', usersRouter);
 app.use('/api/genres', genresRouter);
+//Users router
+app.use('/api/users', usersRouter);
 app.use(errHandler);
-
 
 let server = app.listen(port, () => {
   loglevel.info(`Server running at ${port}`);
