@@ -1,10 +1,10 @@
 import express from 'express';
-import upcomingModel from './upcomingModel';
+import topRatedModel from './topRatedModel';
 
 const router = express.Router();
 
 router.get('/', (req, res, next) => {
-  upcomingModel.find().then(upcoming => res.status(200).send(upcoming)).catch(next);
+  topRatedModel.find().then(topRated => res.status(200).send(topRated)).catch(next);
 });
 
 
