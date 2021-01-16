@@ -4,8 +4,9 @@ import moviesRouter from './api/movies';
 import genresRouter from './api/genres';
 import bodyParser from 'body-parser';
 import './db';
-import {loadUsers, loadMovies} from './seedData';
+import {loadUsers, loadMovies, loadUpcoming} from './seedData';
 import usersRouter from './api/users';
+import upcomingRouter from './api/upcoming'
 import session from 'express-session';
 import passport from './authenticate';
 import loglevel from 'loglevel';
@@ -15,6 +16,7 @@ dotenv.config();
 if (process.env.SEED_DB) {
   loadUsers();
   loadMovies();
+  loadUpcoming();
 }
 
 const app = express();
@@ -43,9 +45,11 @@ app.use(bodyParser.urlencoded());
 app.use(passport.initialize());
 app.use('/api/movies', passport.authenticate('jwt', {session: false}), moviesRouter);
 app.use('/api/genres', genresRouter);
-//Users router
 app.use('/api/users', usersRouter);
+app.use('/api/upcoming', upcomingRouter);
 app.use(errHandler);
+
+
 
 let server = app.listen(port, () => {
   loglevel.info(`Server running at ${port}`);
