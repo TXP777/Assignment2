@@ -1,45 +1,56 @@
 import chai from "chai";
 import request from "supertest";
-import api from "../../../../index";
+import userModel from "../../../../api/users/userModel"
+import movieModel from "../../../../api/movies/movieModel"
+import {movies} from "../../../../seedData/movies.js"
 
 const expect = chai.expect;
-
-//let api;
-let token;
-
 const sampleMovie = {
   id: 337401,
   title: "Mulan",
 };
 
-describe("Movies endpoint", function (){
-  // beforeEach(() => {
-  //   try {
-  //     api = require("../../../../index");
-  //   } catch (err) {
-  //     console.error(`failed to Load user Data: ${err}`);
-  //   }
-  // });
-  this.timeout(6400);
-  before((done) => {
-    setTimeout(() => {
-      done();
-    },5000);
-  });
-  before((done) => {
-    request(api)
-      .post("/api/users")
-      .send({
-        "username": "user1",
-        "password": "test1"
-      })
-      .end((err, res) => {
-        token = res.body.token;
-        console.log(token)
-        done();
-      });
-  });
+let api;
+let token;
 
+const users = [
+  {
+    username: "user1",
+    password: "test1",
+  },
+  {
+    username: "user2",
+    password: "test2",
+  },
+];
+
+describe("Movies endpoint", () => {
+  beforeEach(async () => {
+    try {
+      api = require("../../../../index");
+      await userModel.deleteMany();
+      await users.forEach(user => userModel.create(user));
+    } catch (err) {
+      console.error(`failed to Load user Data: ${err}`);
+    }
+    try {
+    await movieModel.deleteMany();
+    await movieModel.collection.insertMany(movies);
+    console.info(`${movies.length} Movies were successfully stored.`);
+    } catch (err) {
+    console.error(`failed to Load movie Data: ${err}`);
+    }
+    return request(api)
+        .post("/api/users")
+        .send({
+          username: "user1",
+          password: "test1",
+        })
+        .expect(200)
+        .then((res) => {
+          token= res.body.token;
+        });
+  });
   afterEach(() => {
     api.close(); // Release PORT 8080
     delete require.cache[require.resolve("../../../../index")];
@@ -65,8 +76,8 @@ describe("Movies endpoint", function (){
       it("should return the matching movie", () => {
         return request(api)
           .get(`/api/movies/${sampleMovie.id}`)
-          .set("Accept", "application/json")
           .set("Authorization", token)
+          .set("Accept", "application/json")
           .expect("Content-Type", /json/)
           .expect(200)
           .then((res) => {
@@ -78,10 +89,10 @@ describe("Movies endpoint", function (){
       it("should return an empty array", () => {
         return request(api)
           .get(`/api/movies/9999`)
-          .set("Accept", "application/json")
           .set("Authorization", token)
+          .set("Accept", "application/json")
           .expect({});
       });
     });
-  });
+  })
 });

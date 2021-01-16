@@ -21,6 +21,7 @@ stages:
   - build
   - test
   - staging
+  - deploy
 
 # Jobs:
 
@@ -53,3 +54,35 @@ deploy_staging:
   script:  
     - dpl --provider=heroku --app=$HEROKU_APP_NAME_STAGING --api-key=$HEROKU_API_KEY
     - echo "Deployed to staging server"
+
+continuous_delivery:
+  image: ruby:latest
+  only:
+    - develop
+  stage: deploy
+  dependencies:
+    - deploy_staging
+  before_script:
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+  script:
+    - dpl --provider=heroku --app=$HEROKU_APP_NAME_MASTER --api-key=$HEROKU_API_KEY
+    - echo "Deployed to master server"
+  when: manual
+
+continuous_deployment:
+  image: ruby:latest
+  only:
+    - master
+  stage: deploy
+  dependencies:
+    - deploy_staging
+  before_script:
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+  script:
+    - dpl --provider=heroku --app=$HEROKU_APP_NAME_MASTER --api-key=$HEROKU_API_KEY
+    - echo "Deployed to master server"
+

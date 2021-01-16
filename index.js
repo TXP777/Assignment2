@@ -57,7 +57,7 @@ app.use(errHandler);
 
 
 
-let server = app.listen(port, () => {
+const server = app.listen(port, () => {
   loglevel.info(`Server running at ${port}`);
 });
 

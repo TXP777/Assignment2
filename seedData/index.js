@@ -5,6 +5,10 @@ import topRatedModel from '../api/topRated/topRatedModel';
 import peopleModel from '../api/people/peopleModel';
 import {movies} from './movies.js';
 import {upcoming} from './upcoming.js';
+import {topRated} from './topRated.js';
+import {people} from './people.js';
+
+
 import {
   getMovies,getUpcomingMovies,getTopRatedMovies,getPeople
 } from '../api/tmdb-api';
@@ -51,6 +55,7 @@ export async function loadMovies() {
  
 export async function loadUpcoming() {
   console.log('load upcoming data');
+  console.log(upcoming.length);
   try {
     getUpcomingMovies().then(async upcoming =>{
     await upcomingModel.deleteMany();
@@ -63,6 +68,7 @@ export async function loadUpcoming() {
 }
 export async function loadTopRated() {
   console.log('load topRated data');
+  console.log(topRated.length);
   try {
     getTopRatedMovies().then(async topRated =>{
     await topRatedModel.deleteMany();
@@ -75,6 +81,7 @@ export async function loadTopRated() {
 }
 export async function loadPeople() {
   console.log('load people data');
+  console.log(people.length);
   try {
     getPeople().then(async people =>{
     await peopleModel.deleteMany();
@@ -85,3 +92,5 @@ export async function loadPeople() {
     console.error(`failed to Load people Data: ${err}`);
   }
 }
+
+

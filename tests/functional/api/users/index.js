@@ -1,14 +1,12 @@
 import chai from "chai";
 import request from "supertest";
 const mongoose = require("mongoose");
-import User from "../../../../api/users/userModel";
-import api from "../../../../index";
+import userModel from "../../../../api/users/userModel";
 
 const expect = chai.expect;
 
 let db;
-//let api;
-let token;
+let api;
 
 const users = [
   {
@@ -22,23 +20,12 @@ const users = [
 ];
 
 describe("Users endpoint", () => {
-  before((done) => {
+  before(() => {
     mongoose.connect(process.env.mongoDB, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
     db = mongoose.connection;
-    request(api)
-      .post("/api/users")
-      .send({
-        "username": "user1",
-        "password": "test1"
-      })
-      .end((err, res) => {
-        token = res.body.token;
-        console.log(token)
-        done();
-      });
   });
 
   after(async () => {
@@ -50,15 +37,15 @@ describe("Users endpoint", () => {
   });
   beforeEach(async () => {
     try {
-      //api = require("../../../../index");
-      await User.deleteMany({});
-      await User.collection.insertMany(users);
+      api = require("../../../../index");
+      await userModel.deleteMany();
+      await userModel.collection.insertMany(users);
     } catch (err) {
       console.error(`failed to Load user Data: ${err}`);
     }
   });
   afterEach(() => {
-    api.close();
+    api.close(); // Release PORT 8080
     delete require.cache[require.resolve("../../../../index")];
   });
   describe("GET /users ", () => {
@@ -104,3 +91,4 @@ describe("Users endpoint", () => {
     });
   });
 });
+
