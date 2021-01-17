@@ -207,14 +207,11 @@ Name: Xianping Tao
 + Staging app overview 
 
 ![][movie-api-staging]
-![][movie-api-deploy]
+
 
 + Production app overview 
 
-[ , , , screenshot here . . . ]
-
-[If an alternative platform to Heroku was used then show the relevant page from that platform's UI.]
-
+![][movie-api-deploy]
 
 [movie-api-staging]: ./img/movies-api-staging.png
-[]
+[movie-api-deploy]: ./img/movies-api-deploy.png
