@@ -12,6 +12,7 @@ import peopleRouter from './api/people';
 import session from 'express-session';
 import passport from './authenticate';
 import loglevel from 'loglevel';
+import swaggerUi from 'swagger-ui-express';
 
 dotenv.config();
 

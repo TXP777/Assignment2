@@ -6,6 +6,7 @@ Name: Xianping Tao
  + Feature 1 - new API routes, including a parameterised URL.
  + Feature 2 - Mongo integration.
  + Feature 3 - Minimal React integration
+ + Nested Document and/or object referencing in Mongo/Mongoose.
  + Feature 4 - Basic authentication
  + Feature 5 - Use expression middleware
 
