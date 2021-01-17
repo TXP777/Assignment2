@@ -6,15 +6,9 @@ Name: Xianping Tao
  + Feature 1 - new API routes, including a parameterised URL.
  + Feature 2 - Mongo integration.
  + Feature 3 - Minimal React integration
- + Nested Document and/or object referencing in Mongo/Mongoose.
- + Feature 4 - Basic authentication
- + Feature 5 - Use expression middleware
-
-## Installation Requirements
-
-git clone https://github.com/TXP777/
-
-
+ + Feature 4 - Nested Document and/or object referencing in Mongo/Mongoose.
+ + Feature 5 - Basic authentication
+ + Feature 6 - Use expression middleware
 
 
 ## API Configuration
@@ -36,9 +30,9 @@ Give an overview of your web API design, perhaps similar to the following:
 | /api/movies |Gets a list of movies | N/A | N/A |
 | /api/movies/{movieid} | Get a Movie | N/A | N/A | N/A
 | /api/movies/{movieid}/reviews | Get all reviews for movie | Create a new review for Movie | N/A | N/A  
-| /api/upcoming | Gets a list of movies | N/A | N/A | delete movies by id
+| /api/upcoming | Gets a list of movies | N/A | N/A | N/A
 | /api/topRated |Gets a list of movies | N/A | N/A | N/A
-| /api/people |Gets a list of people | N/A | N/A | Delete people by id
+| /api/people |Gets a list of people | N/A | N/A | N/A
 | /api/users |Gets a list of users | Create a new user | N/A | N/A
 | /api/genres |Gets a list of genres | N/A | N/A | N/A
 
@@ -78,12 +72,6 @@ export default passport;
 
 app.use('/api/movies', passport.authenticate('jwt', {session: false}), moviesRouter);
 
-
-
-
-
-
- Indicate which routes are protected.
 
 
 ## Integrating with React App
