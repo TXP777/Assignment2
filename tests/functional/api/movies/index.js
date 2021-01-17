@@ -10,12 +10,6 @@ const currentMovieTitle = "Jiu Jitsu";
 //let api;
 let token;
 
-const sampleMovie = {
-  id: 337401,
-  title: "Mulan",
-};
-
-
 describe("Movies endpoint", function () {
   // beforeEach(() => {
   //   try {
@@ -79,7 +73,20 @@ describe("Movies endpoint", function () {
   });
 
 
-  describe("GET /movies/:id", () => { 
+  describe("GET /movies/:id", () => {
+    describe("when the id is valid", () => {
+      it("should return the matching movie", () => {
+        return request(api)
+          .get(`/api/movies/${currentMovieId}`)
+          .set("Accept", "application/json")
+          .set("Authorization", token)
+          .expect("Content-Type", /json/)
+          .expect(200)
+          .then((res) => {
+            expect(res.body).to.have.property("title", currentMovieTitle);
+          });
+      });
+    });
     describe("when the id is invalid", () => {
       it("should return an empty array", () => {
         return request(api)
@@ -90,6 +97,16 @@ describe("Movies endpoint", function () {
       });
     });
   });
-  
 
+  describe("Delete /movies/:id", () => {
+    describe("when the movie exists", () => {
+      it("should delete the movie", () => {
+        return request(api)
+          .delete(`/api/movies/${currentMovieId}`)
+          .set("Accept", "application/json")
+          .set("Authorization", token)
+          .expect(404);
+      });
+    });
+  });
 });
