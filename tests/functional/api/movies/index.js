@@ -97,16 +97,4 @@ describe("Movies endpoint", function () {
       });
     });
   });
-
-  describe("Delete /movies/:id", () => {
-    describe("when the movie exists", () => {
-      it("should delete the movie", () => {
-        return request(api)
-          .delete(`/api/movies/${currentMovieId}`)
-          .set("Accept", "application/json")
-          .set("Authorization", token)
-          .expect(404);
-      });
-    });
-  });
 });

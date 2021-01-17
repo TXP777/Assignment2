@@ -64,15 +64,4 @@ describe("Upcoming endpoint", () => {
       });
   });
   
-  describe("Delete /upcoming/:id", () => {
-    describe("when the movie exists", () => {
-      it("should delete the movie", () => {
-        return request(api)
-          .delete(`/api/upcoming/${currentMovieId}`)
-          .set("Accept", "application/json")
-          .set("Authorization", token)
-          .expect(404);
-      });
-    });
-  });
 });
