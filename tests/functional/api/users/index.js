@@ -1,12 +1,17 @@
 import chai from "chai";
 import request from "supertest";
 const mongoose = require("mongoose");
-import userModel from "../../../../api/users/userModel";
+import User from "../../../../api/users/userModel";
+import api from "../../../../index";
 
 const expect = chai.expect;
 
 let db;
-let api;
+//let api;
+let token;
+let specfiedUser;
+let movieId = 590706;
+
 
 const users = [
   {
@@ -20,12 +25,23 @@ const users = [
 ];
 
 describe("Users endpoint", () => {
-  before(() => {
+  before((done) => {
     mongoose.connect(process.env.mongoDB, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
     db = mongoose.connection;
+    request(api)
+      .post("/api/users")
+      .send({
+        "username": "user1",
+        "password": "test1"
+      })
+      .end((err, res) => {
+        token = res.body.token;
+        console.log(token);
+        done();
+      });
   });
 
   after(async () => {
@@ -37,15 +53,15 @@ describe("Users endpoint", () => {
   });
   beforeEach(async () => {
     try {
-      api = require("../../../../index");
-      await userModel.deleteMany();
-      await userModel.collection.insertMany(users);
+      //api = require("../../../../index");
+      await User.deleteMany({});
+      await User.collection.insertMany(users);
     } catch (err) {
       console.error(`failed to Load user Data: ${err}`);
     }
   });
   afterEach(() => {
-    api.close(); // Release PORT 8080
+    api.close();
     delete require.cache[require.resolve("../../../../index")];
   });
   describe("GET /users ", () => {
@@ -90,5 +106,7 @@ describe("Users endpoint", () => {
         });
     });
   });
-});
 
+  
+
+});
