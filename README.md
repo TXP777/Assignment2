@@ -168,11 +168,9 @@ Name: Xianping Tao
 + Get /api/movies - returns an array of movie objects.
 + Get /api/movies/:id - returns detailed information on a specific movie.
 + Get /api/movies/:id/reviews - returns reviews of detailed information on a specific movie.
-+ Delete /api/movies/:id - delete a specific movie.
 + Get /api/upcoming - returns an array of movie objects.
 + Get /api/upcoming/:id - returns detailed information on a specific movie.
 + Get /api/upcoming/:id/reviews - returns reviews of detailed information on a specific movie.
-+ Delete /api/upcoming/:id - delete a specific movie.
 + Get /api/topRated - returns an array of movie objects.
 + Get /api/topRated/:id - returns detailed information on a specific movie.
 + Get /api/topRated/:id/reviews - returns reviews of detailed information on a specific movie.
